@@ -39,7 +39,9 @@ then
    AWS_SECRET=`echo $VCAP_SERVICES|jq .s3[].credentials.secret_access_key`
    echo "AWS_SECRET=${AWS_SECRET}"
    
-   export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE`
+   $APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE -v
+   
+   export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE|head -1`
    
    echo "AWS_SIGNING_KEY=${AWS_SIGNING_KEY}"
 fi
