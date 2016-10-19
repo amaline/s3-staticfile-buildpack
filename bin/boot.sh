@@ -21,6 +21,13 @@ then
   conf_file=$APP_ROOT/public/nginx.conf
 fi
 
+if [ -f $APP_ROOT/nginx/conf/.enable_s3 ]
+then
+   echo "Enabling s3"
+   echo -n "AWS_ACCESS_KEY = "
+   echo `echo $VCAP_SERVICES|jq .s3[].credentials.access_key_id`
+fi
+
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
 erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf
 
