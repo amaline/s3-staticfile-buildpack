@@ -31,7 +31,7 @@ then
    then
       AWS_REGION="us-east-1"
    fi
-   export AWS_SIGNING_KEY_SCOPE="${CURRENT_DATE}/${AWS_REGION}/s3/aws4_request"
+   export AWS_SIGNING_KEY_SCOPE=${CURRENT_DATE}/${AWS_REGION}/s3/aws4_request
    AWS_SECRET=`echo $VCAP_SERVICES|jq .s3[].credentials.secret_access_key`
    export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE`
    echo "AWS_SIGNING_KEY_SCOPE=${AWS_SIGNING_KEY_SCOPE}"
