@@ -26,7 +26,16 @@ then
    echo "Enabling s3"
    export AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq .s3[].credentials.access_key_id`
    export AWS_S3_BUCKET=`echo $VCAP_SERVICES|jq .s3[].credentials.bucket`
+   CURRENT_DATE=`date +%Y%m%d`
+   if [ "${AWS_REGION}X" == "X" ]
+   then
+      AWS_REGION="us-east-1"
+   fi
+   export AWS_SIGNING_KEY_SCOPE="${CURRENT_DATE}/${AWS_REGION}/s3/aws4_request"
    AWS_SECRET=`echo $VCAP_SERVICES|jq .s3[].credentials.secret_access_key`
+   export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE`
+   echo "AWS_SIGNING_KEY_SCOPE=${AWS_SIGNING_KEY_SCOPE}"
+   echo "AWS_SIGNING_KEY=${AWS_SIGNING_KEY}"
 fi
 
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
