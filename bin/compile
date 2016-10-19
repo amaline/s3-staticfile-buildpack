@@ -86,4 +86,10 @@ if [[ -e "Staticfile" && "$(grep 'pushstate: enabled' Staticfile)X" != "X" ]]; t
   touch nginx/conf/.enable_pushstate
 fi
 
+# Enable S3
+if [[ -e "Staticfile" && "$(grep 's3: enabled' Staticfile)X" != "X" ]]; then
+  status "Enabling s3"
+  touch nginx/conf/.enable_s3
+fi
+
 cp $compile_buildpack_bin/boot.sh .
