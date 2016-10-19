@@ -48,9 +48,6 @@ then
    #echo "AWS_SIGNING_KEY=${AWS_SIGNING_KEY}"
 fi
 
-echo "------------------------------- $conf_file ---------------------------"
-cat $conf_file
-echo "----------------------------------------------------------------------"
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
 erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf
 echo "------------------------------- nginx.conf ---------------------------"
