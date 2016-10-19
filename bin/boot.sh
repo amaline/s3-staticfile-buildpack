@@ -24,8 +24,8 @@ fi
 if [ -f $APP_ROOT/nginx/conf/.enable_s3 ]
 then
    echo "Enabling s3"
-   export AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq .s3[].credentials.access_key_id`
-   export AWS_S3_BUCKET=`echo $VCAP_SERVICES|jq .s3[].credentials.bucket`
+   export AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq --raw-output .s3[].credentials.access_key_id`
+   export AWS_S3_BUCKET=`echo $VCAP_SERVICES|jq --raw-output  .s3[].credentials.bucket`
    AWS_SECRET=`echo $VCAP_SERVICES|jq .s3[].credentials.secret_access_key`
    
    CURRENT_DATE=`date +%Y%m%d`
@@ -38,6 +38,7 @@ then
    
    echo "CURRENT_DATE=${CURRENT_DATE}."
    echo "AWS_REGION=${AWS_REGION}."
+   echo "AWS_ACCESS_KEY=${AWS_ACCESS_KEY}"
    echo "AWS_S3_BUCKET=${AWS_S3_BUCKET}"
    echo "AWS_SIGNING_KEY_SCOPE=${AWS_SIGNING_KEY_SCOPE}"
    #echo "AWS_SECRET=${AWS_SECRET}"
