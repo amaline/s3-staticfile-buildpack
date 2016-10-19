@@ -24,8 +24,9 @@ fi
 if [ -f $APP_ROOT/nginx/conf/.enable_s3 ]
 then
    echo "Enabling s3"
-   echo -n "AWS_ACCESS_KEY = "
-   echo `echo $VCAP_SERVICES|jq .s3[].credentials.access_key_id`
+   export AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq .s3[].credentials.access_key_id`
+   export AWS_S3_BUCKET=`echo $VCAP_SERVICES|jq .s3[].credentials.bucket`
+   AWS_SECRET=`echo $VCAP_SERVICES|jq .s3[].credentials.secret_access_key`
 fi
 
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
