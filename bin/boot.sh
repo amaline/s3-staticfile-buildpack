@@ -27,7 +27,7 @@ then
    export AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq .s3[].credentials.access_key_id`
    export AWS_S3_BUCKET=`echo $VCAP_SERVICES|jq .s3[].credentials.bucket`
    CURRENT_DATE=`date +%Y%m%d`
-   if [[ "${AWS_REGION}X" == "X" ]]
+   if [ "${AWS_REGION}X" = "X" ]
    then
       AWS_REGION="us-east-1"
    fi
