@@ -33,7 +33,7 @@ then
    fi
    echo "CURRENT_DATE=${CURRENT_DATE}."
    echo "AWS_REGION=${AWS_REGION}."
-   export AWS_SIGNING_KEY_SCOPE="${CURRENT_DATE}/${AWS_REGION}/s3/aws4_request"
+   export AWS_SIGNING_KEY_SCOPE=${CURRENT_DATE}/${AWS_REGION}/s3/aws4_request
    echo "AWS_SIGNING_KEY_SCOPE=${AWS_SIGNING_KEY_SCOPE}"
    
    AWS_SECRET=`echo $VCAP_SERVICES|jq .s3[].credentials.secret_access_key`
