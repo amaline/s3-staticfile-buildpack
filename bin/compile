@@ -93,3 +93,6 @@ if [[ -e "Staticfile" && "$(grep 's3: enabled' Staticfile)X" != "X" ]]; then
 fi
 
 cp $compile_buildpack_bin/boot.sh .
+cp $compile_buildpack_bin/generate_signing_key .
+chmod +x generate_signing_key
+
