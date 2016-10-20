@@ -26,7 +26,7 @@ then
    echo "Enabling s3"
    export AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq --raw-output .s3[].credentials.access_key_id`
    export AWS_S3_BUCKET=`echo $VCAP_SERVICES|jq --raw-output  .s3[].credentials.bucket`
-   AWS_SECRET=`echo $VCAP_SERVICES| --raw-output jq .s3[].credentials.secret_access_key`
+   AWS_SECRET=`echo $VCAP_SERVICES| jq --raw-output  .s3[].credentials.secret_access_key`
    
    CURRENT_DATE=`date +%Y%m%d`
    
