@@ -44,8 +44,8 @@ then
    #echo "AWS_SECRET=${AWS_SECRET}"
    
    export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE|head -1`
-   
    #echo "AWS_SIGNING_KEY=${AWS_SIGNING_KEY}"
+   export AWS_SIGNING_PORT=8000
 fi
 
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
