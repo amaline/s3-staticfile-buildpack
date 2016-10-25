@@ -95,7 +95,7 @@ fi
 # Enable cached directories
 if [[ -e "Staticfile" && "$(grep 'cached_dirs: .*$' Staticfile)X" != "X" ]]; then
    status "Enabling cached directories"
-   touch nginx/conf.enable_cache_dirs
+   touch nginx/conf/enable_cache_dirs
 fi
 
 cp $compile_buildpack_bin/boot.sh .
