@@ -92,6 +92,12 @@ if [[ -e "Staticfile" && "$(grep 's3: enabled' Staticfile)X" != "X" ]]; then
   touch nginx/conf/.enable_s3
 fi
 
+# Enable cached directories
+if [[ -e "Staticfile" && "$(grep 'cached_dirs: .*$' Staticfile)X" != "X" ]]; then
+   status "Enabling cached directories"
+   touch nginx/conf.enable_cache_dirs
+fi
+
 cp $compile_buildpack_bin/boot.sh .
 cp $compile_buildpack_bin/generate_signing_key .
 chmod +x generate_signing_key
