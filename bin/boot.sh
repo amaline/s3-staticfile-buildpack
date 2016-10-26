@@ -48,6 +48,12 @@ then
    export AWS_SIGNING_PORT=8000
 fi
 
+if [ -f $APP_ROOT/nginx/conf/.enable_cached_dirs ]
+then
+   echo "Enabling cache directories"
+   export NGINX_CACHED_DIRS=`cat $APP_ROOT/nginx/conf/.enable_cached_dirs`
+fi
+
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
 erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf
 echo "------------------------------- nginx.conf ---------------------------"
