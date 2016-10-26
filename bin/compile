@@ -96,7 +96,7 @@ fi
 if [[ -e "Staticfile" && "$(grep 'cached_dirs: .*$' Staticfile)X" != "X" ]]; then
    status "Enabling cached directories"
    # place each directory (separated by a comma) on a separate line
-   awk -F: '/^cached_dirs:/{gsub (" ", "", $2);gsub(",","\n",$2);print $2}' Staticfile > nginx/conf/.enable_cached_dirs
+   awk -F: '/^cached_dirs:/{gsub (" ", "", $2);print $2}' Staticfile > nginx/conf/.enable_cached_dirs
 fi
 
 cp $compile_buildpack_bin/boot.sh .
