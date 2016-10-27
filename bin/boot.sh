@@ -75,9 +75,9 @@ cat < $APP_ROOT/nginx/logs/access.log &
 (>&2 cat) < $APP_ROOT/nginx/logs/error.log &
 
 # each instance will rebuild the nginx.conf file with a new signing key with a random number of days interval
-export REBUILD_SLEEP=`expr $RANDOM % 5 \* 86400` # between 1 and 5 days
-echo "Rebuild nginx.conf every $REBUILD_SLEEP seconds"
-(while sleep $REBUILD_SLEEP
+export r=$(( $RANDOM % 4 * 86400 + 86400 ))
+echo "Rebuild nginx.conf every $r seconds"
+(while sleep $r
     do 
         echo "Rebuild nginx.conf"
         NGINX_PID=`cat $APP_ROOT/nginx/logs/nginx.pid`
