@@ -81,8 +81,8 @@ cat < $APP_ROOT/nginx/logs/access.log &
         echo "Rebuild nginx.conf"
         NGINX_PID=`cat $APP_ROOT/nginx/logs/nginx.pid`
         echo "NGINX_PID=$NGINX_PID"
-        erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf 2>> $APP_ROOT/nginx/logs/rebuildconf.log
-        echo "[`date`] nginx.conf rebuilt" >> $APP_ROOT/nginx/logs/rebuildconf.log
+        erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf #2>> $APP_ROOT/nginx/logs/rebuildconf.log
+        echo "[`date`] nginx.conf rebuilt" #>> $APP_ROOT/nginx/logs/rebuildconf.log
         ps -deaf 
         kill -1 $NGINX_PID
     done) &
