@@ -68,14 +68,6 @@ echo "------------------------------- nginx.conf ---------------------------"
 cat $APP_ROOT/nginx/conf/nginx.conf
 echo "----------------------------------------------------------------------"
 
-(while sleep 60
-    do 
-        erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf 2>> $APP_ROOT/nginx/logs/rebuildconf.log
-        echo "[`date`] nginx.conf rebuilt" >> $APP_ROOT/nginx/logs/rebuildconf.log
-        ps -deaf >> $APP_ROOT/nginx/logs/rebuildconf.log
-    done) &
-# ------------------------------------------------------------------------------------------------
-
 mkfifo $APP_ROOT/nginx/logs/access.log
 mkfifo $APP_ROOT/nginx/logs/error.log
 mkfifo $APP_ROOT/nginx/logs/rebuildconf.log
@@ -84,6 +76,17 @@ cat < $APP_ROOT/nginx/logs/access.log &
 (>&2 cat) < $APP_ROOT/nginx/logs/error.log &
 (>&2 cat) < $APP_ROOT/nginx/logs/rebuildconf.log &
 
+(while sleep 60
+    do 
+        echo "Rebuild nginx.conf"
+        NGINX_PID=`cat $APP_ROOT/nginx/logs/nginx.pid`
+        echo "NGINX_PID=$NGINX_PID"
+        erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf 2>> $APP_ROOT/nginx/logs/rebuildconf.log
+        echo "[`date`] nginx.conf rebuilt" >> $APP_ROOT/nginx/logs/rebuildconf.log
+        ps -deaf 
+        kill -1 $NGINX_PID
+    done) &
+    
 exec $APP_ROOT/nginx/sbin/nginx -p $APP_ROOT/nginx -c $APP_ROOT/nginx/conf/nginx.conf
 
 # ------------------------------------------------------------------------------------------------
