@@ -99,7 +99,7 @@ if [[ -e "Staticfile" && "$(grep 'cached_dirs: .*$' Staticfile)X" != "X" ]]; the
 fi
 
 # Enable custom error page
-if [[ -e "Staticfile" && "$(grep 'errorpage: .*$' Staticfile)X" != "X"]];then
+if [[ -e "Staticfile" && "$(grep 'errorpage: .*$' Staticfile)X" != "X" ]]; then
    status "Enabling custom error page"
    awk -F: '/^errorpage:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_custom_errorpage
 fi
