@@ -54,6 +54,14 @@ then
    export NGINX_CACHED_DIRS=`cat $APP_ROOT/nginx/conf/.enable_cached_dirs`
 fi
 
+if [ -f $APP_ROOT/nginx/conf/.enable_custom_errorpage ]
+then
+  echo "Enabling custom error page"
+  export HTML_ERROR_PAGE=`cat $APP_ROOT/nginx/conf/.enable_custom_errorpage`
+else
+  export HTML_ERROR_PAGE=/error.html
+fi
+
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
 erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf
 echo "------------------------------- nginx.conf ---------------------------"
