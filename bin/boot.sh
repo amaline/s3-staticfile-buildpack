@@ -70,20 +70,21 @@ echo "----------------------------------------------------------------------"
 
 mkfifo $APP_ROOT/nginx/logs/access.log
 mkfifo $APP_ROOT/nginx/logs/error.log
-mkfifo $APP_ROOT/nginx/logs/rebuildconf.log
 
 cat < $APP_ROOT/nginx/logs/access.log &
 (>&2 cat) < $APP_ROOT/nginx/logs/error.log &
-(>&2 cat) < $APP_ROOT/nginx/logs/rebuildconf.log &
 
-(while sleep 60
+# each instance will rebuild the nginx.conf file with a new signing key with a random number of days interval
+export REBUILD_SLEEP=`expr $(( ( RANDOM % 5 )  + 1 )) \* 86400` # between 1 and 5 days
+echo "Rebuild nginx.conf every $REBUILD_SLEEP seconds"
+(while sleep $REBUILD_SLEEP
     do 
         echo "Rebuild nginx.conf"
         NGINX_PID=`cat $APP_ROOT/nginx/logs/nginx.pid`
         echo "NGINX_PID=$NGINX_PID"
-        erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf #2>> $APP_ROOT/nginx/logs/rebuildconf.log
-        echo "[`date`] nginx.conf rebuilt" #>> $APP_ROOT/nginx/logs/rebuildconf.log
-        ps -deaf 
+        export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE|head -1`
+        erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf 
+        echo "nginx.conf rebuilt.  Issuing: kill -1 $NGINX_PID" 
         kill -1 $NGINX_PID
     done) &
     
