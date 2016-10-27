@@ -74,8 +74,10 @@ mkfifo $APP_ROOT/nginx/logs/error.log
 cat < $APP_ROOT/nginx/logs/access.log &
 (>&2 cat) < $APP_ROOT/nginx/logs/error.log &
 
-# each instance will rebuild the nginx.conf file with a new signing key with a random number of days interval
-export r=$(( $RANDOM % 4 * 86400 + 86400 ))
+# each instance will rebuild the nginx.conf file with a new signing key with an
+# interval based on the instance number, but at least bit more than 25 hours
+# (want at least a day to generate a new signing key without worry of daylight savings time)
+export r=`expr $CF_INSTANCE_INDEX \* 86400 + 86400 + 3700`
 echo "Rebuild nginx.conf every $r seconds"
 (while sleep $r
     do 
