@@ -104,6 +104,8 @@ if [[ -e "Staticfile" && "$(grep 'errorpage: .*$' Staticfile)X" != "X" ]]; then
    awk -F: '/^errorpage:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_custom_errorpage
 fi
 
+pwd
+ls -l
 # Enable include for Redirects
 if [[ -e "Redirects"  ]]; then
   status "Enabling include of Redirects file"
