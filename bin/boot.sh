@@ -82,7 +82,8 @@ export r=180
 echo "Rebuild nginx.conf every $r seconds"
 (while sleep $r
     do 
-        export REBUILD_DATE=$(TZ='America/New_York' date)
+        REBUILD_DATE=$(TZ='America/New_York' date)
+        export REBUILD_DATE
         echo "Rebuild nginx.conf"
         NGINX_PID=`cat $APP_ROOT/nginx/logs/nginx.pid`
         echo "NGINX_PID=$NGINX_PID"
