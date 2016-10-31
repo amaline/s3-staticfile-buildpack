@@ -104,6 +104,12 @@ if [[ -e "Staticfile" && "$(grep 'errorpage: .*$' Staticfile)X" != "X" ]]; then
    awk -F: '/^errorpage:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_custom_errorpage
 fi
 
+# Enable include for Redirects
+if [[ -e "Redirects"  ]]; then
+  status "Enabling include of Redirects file"
+  mv Redirects nginx/conf/.redirects
+fi
+
 cp $compile_buildpack_bin/boot.sh .
 cp $compile_buildpack_bin/generate_signing_key .
 chmod +x generate_signing_key
