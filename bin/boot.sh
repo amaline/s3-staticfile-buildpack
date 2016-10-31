@@ -63,6 +63,10 @@ else
 fi
 
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
+
+REBUILD_DATE=$(TZ='America/New_York' date)
+export REBUILD_DATE
+
 erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf
 echo "------------------------------- nginx.conf ---------------------------"
 cat $APP_ROOT/nginx/conf/nginx.conf
@@ -75,10 +79,10 @@ cat < $APP_ROOT/nginx/logs/access.log &
 (>&2 cat) < $APP_ROOT/nginx/logs/error.log &
 
 # each instance will rebuild the nginx.conf file with a new signing key with an
-# interval based on the instance number, but at least bit more than 25 hours
-# (want at least a day to generate a new signing key without worry of daylight savings time)
-#export r=`expr $CF_INSTANCE_INDEX \* 86400 + 86400 + 3700`
-export r=180
+# interval based on the instance number, starting at 3 hours for instance 0
+# and increasing by 3 hours for each successive instance
+export r=`expr $CF_INSTANCE_INDEX \* 10800 + 10800`
+#export r=180
 echo "Rebuild nginx.conf every $r seconds"
 (while sleep $r
     do 
@@ -89,7 +93,7 @@ echo "Rebuild nginx.conf every $r seconds"
         echo "NGINX_PID=$NGINX_PID"
         export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE|head -1`
         erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf 
-        echo "nginx.conf rebuilt.  Issuing: kill -1 $NGINX_PID" 
+        echo "nginx.conf rebuilt.  Issuing: kill -HUP $NGINX_PID" 
         kill -HUP $NGINX_PID
     done) &
     
