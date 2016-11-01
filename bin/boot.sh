@@ -91,6 +91,7 @@ echo "Rebuild nginx.conf every $r seconds"
         echo "Rebuild nginx.conf"
         NGINX_PID=`cat $APP_ROOT/nginx/logs/nginx.pid`
         echo "NGINX_PID=$NGINX_PID"
+        CURRENT_DATE=`date +%Y%m%d`
         export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE|head -1`
         erb $APP_ROOT/nginx/conf/orig.conf > $APP_ROOT/nginx/conf/nginx.conf 
         echo "nginx.conf rebuilt.  Issuing: kill -HUP $NGINX_PID" 
