@@ -98,10 +98,16 @@ if [[ -e "Staticfile" && "$(grep 'cached_dirs: .*$' Staticfile)X" != "X" ]]; the
    awk -F: '/^cached_dirs:/{gsub (" ", "", $2);print $2}' Staticfile > nginx/conf/.enable_cached_dirs
 fi
 
-# Enable custom error page
-if [[ -e "Staticfile" && "$(grep 'errorpage: .*$' Staticfile)X" != "X" ]]; then
-   status "Enabling custom error page"
-   awk -F: '/^errorpage:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_custom_errorpage
+# Enable migration proxy, if no migration proxy check for custom error page
+if [[ -e "Staticfile" && "$(grep 'migrationproxy: .*$' Staticfile)X" != "X" ]]; then
+   status "Enabling migration proxy"
+   awk -F: '/^migrationproxy:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_migration_proxy
+else
+    # Enable custom error page
+    if [[ -e "Staticfile" && "$(grep 'errorpage: .*$' Staticfile)X" != "X" ]]; then
+       status "Enabling custom error page"
+       awk -F: '/^errorpage:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_custom_errorpage
+    fi
 fi
 
 # Enable include for Redirects

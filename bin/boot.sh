@@ -54,6 +54,12 @@ then
    export NGINX_CACHED_DIRS=`cat $APP_ROOT/nginx/conf/.enable_cached_dirs`
 fi
 
+if [ -f $APP_ROOT/nginx/conf/.enable_migration_proxy ]
+then
+  echo "Enabling migration proxy"
+  export MIGRATION_PROXY=`cat $APP_ROOT/nginx/conf/.enable_migration_proxy`
+fi
+
 if [ -f $APP_ROOT/nginx/conf/.enable_custom_errorpage ]
 then
   echo "Enabling custom error page"
