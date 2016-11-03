@@ -101,7 +101,7 @@ fi
 # Enable migration proxy, if no migration proxy check for custom error page
 if [[ -e "Staticfile" && "$(grep 'migrationproxy: .*$' Staticfile)X" != "X" ]]; then
    status "Enabling migration proxy"
-   awk -F: '/^migrationproxy:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_migration_proxy
+   awk '/^migrationproxy:/{gsub("migrationproxy: ","",$0);print $0}' Staticfile > nginx/conf/.enable_migration_proxy
 else
     # Enable custom error page
     if [[ -e "Staticfile" && "$(grep 'errorpage: .*$' Staticfile)X" != "X" ]]; then
