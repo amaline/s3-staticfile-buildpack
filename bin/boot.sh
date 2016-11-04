@@ -70,7 +70,7 @@ fi
 
 if [ -f $APP_ROOT/nginx/conf/.allowonly ]
 then
-    export ALLOW_ONY=`cat $APP_ROOT/nginx/conf/.allowonly`
+    export ALLOW_ONLY=`cat $APP_ROOT/nginx/conf/.allowonly`
 fi
 
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
