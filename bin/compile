@@ -116,6 +116,12 @@ if [[ -e "Redirects"  ]]; then
   mv Redirects nginx/conf/.redirects
 fi
 
+# Restric network source
+if [[ -e "Staticfile" && "$(grep 'allowonly: .*$' Staticfile)X" != "X"]];then
+ status "Restricting source IP address range"
+ awk -F: '/^allowonly:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.allowonly
+fi
+
 cp $compile_buildpack_bin/boot.sh .
 cp $compile_buildpack_bin/generate_signing_key .
 chmod +x generate_signing_key

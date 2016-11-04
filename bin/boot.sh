@@ -68,6 +68,11 @@ else
   export HTML_ERROR_PAGE=/error.html
 fi
 
+if [ -f $APP_ROOT/nginx/conf/.allowonly ]
+then
+    export ALLOW_ONY=`cat $APP_ROOT/nginx/conf/.allowonly`
+fi
+
 mv $conf_file $APP_ROOT/nginx/conf/orig.conf
 
 REBUILD_DATE=$(TZ='America/New_York' date)
