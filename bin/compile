@@ -69,42 +69,42 @@ if [[ -f Staticfile.auth ]]; then
 fi
 
 # Enable directory index
-if [[ -e "Staticfile" && "$(grep 'directory:' Staticfile)X" != "X" ]]; then
+if [[ -e "Staticfile" && "$(grep '^directory:' Staticfile)X" != "X" ]]; then
   status "Enabling directory index for folders without index.html files"
   touch nginx/conf/.enable_directory_index
 fi
 
 # Enable ssi module
-if [[ -e "Staticfile" && "$(grep 'ssi: enabled' Staticfile)X" != "X" ]]; then
+if [[ -e "Staticfile" && "$(grep '^ssi: enabled' Staticfile)X" != "X" ]]; then
   status "Enabling ssi"
   touch nginx/conf/.enable_ssi
 fi
 
 # Enable pushstate module
-if [[ -e "Staticfile" && "$(grep 'pushstate: enabled' Staticfile)X" != "X" ]]; then
+if [[ -e "Staticfile" && "$(grep '^pushstate: enabled' Staticfile)X" != "X" ]]; then
   status "Enabling pushstate"
   touch nginx/conf/.enable_pushstate
 fi
 
 # Enable S3
-if [[ -e "Staticfile" && "$(grep 's3: enabled' Staticfile)X" != "X" ]]; then
+if [[ -e "Staticfile" && "$(grep '^s3: enabled' Staticfile)X" != "X" ]]; then
   status "Enabling s3"
   touch nginx/conf/.enable_s3
 fi
 
 # Enable cached directories
-if [[ -e "Staticfile" && "$(grep 'cached_dirs: .*$' Staticfile)X" != "X" ]]; then
+if [[ -e "Staticfile" && "$(grep '^cached_dirs: .*$' Staticfile)X" != "X" ]]; then
    status "Enabling cached directories"
    awk -F: '/^cached_dirs:/{gsub (" ", "", $2);print $2}' Staticfile > nginx/conf/.enable_cached_dirs
 fi
 
 # Enable migration proxy, if no migration proxy check for custom error page
-if [[ -e "Staticfile" && "$(grep 'migrationproxy: .*$' Staticfile)X" != "X" ]]; then
+if [[ -e "Staticfile" && "$(grep '^migrationproxy: .*$' Staticfile)X" != "X" ]]; then
    status "Enabling migration proxy"
    awk '/^migrationproxy:/{gsub("migrationproxy: ","",$0);print $0}' Staticfile > nginx/conf/.enable_migration_proxy
 else
     # Enable custom error page
-    if [[ -e "Staticfile" && "$(grep 'errorpage: .*$' Staticfile)X" != "X" ]]; then
+    if [[ -e "Staticfile" && "$(grep '^errorpage: .*$' Staticfile)X" != "X" ]]; then
        status "Enabling custom error page"
        awk -F: '/^errorpage:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_custom_errorpage
     fi
