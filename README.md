@@ -1,5 +1,4 @@
 #Cloud Foundry Static Buildpack with S3 support
-[![CF Slack](https://s3.amazonaws.com/buildpacks-assets/buildpacks-slack.svg)](http://slack.cloudfoundry.org)
 
 A Cloud Foundry [buildpack](http://docs.cloudfoundry.org/buildpacks/) for static stites (HTML/JS/CSS) with the static assets stored in Amazon Simple Storage Service (S3).
 This buildpack was originally forked from the default staticfile buildpack, but since it was modified to support a cloud service provider specific service (S3) it provides capabilities that should not be merged back into a generic buildpack that can run on any CSP.
