@@ -25,18 +25,18 @@ cd $build_dir
 
 # Alternate root location (default is root of project) for html/js/css
 # root: dist/
-if [[ -e "Staticfile" && "$(grep 'root:' Staticfile)X" != "X" ]]; then
-  root_dir=$(grep 'root:' Staticfile | sed -e 's/^root: *//;s/\s*$//')
+if [[ -e "S3-Staticfile" && "$(grep 'root:' S3-Staticfile)X" != "X" ]]; then
+  root_dir=$(grep 'root:' S3-Staticfile | sed -e 's/^root: *//;s/\s*$//')
   status "Root folder $root_dir"
 else
   status "Using root folder"
 fi
 root_dir=${root_dir:-.}
 if [[ ! -e ${root_dir} ]] ; then
-  error "the application Staticfile specifies a root directory \`${root_dir}\` that does not exist"
+  error "the application S3-Staticfile specifies a root directory \`${root_dir}\` that does not exist"
 fi
 if [[ ! -d ${root_dir} ]] ; then
-  error "the application Staticfile specifies a root directory \`${root_dir}\` that is a plain file, but was expected to be a directory"
+  error "the application S3-Staticfile specifies a root directory \`${root_dir}\` that is a plain file, but was expected to be a directory"
 fi
 
 status "Copying project files into public/"
@@ -44,7 +44,7 @@ shopt -s extglob
 root_dir_absolute=`cd $root_dir 2>/dev/null && pwd -P`
 if [ ${build_dir}/public != ${root_dir_absolute} ]; then
   tmp_dir=`mktemp -d /tmp/XXXXX`
-  mv $root_dir_absolute/!(Staticfile|Staticfile.auth|manifest.yml|Redirects|stackato.yml) $tmp_dir || true
+  mv $root_dir_absolute/!(S3-Staticfile|Staticfile.auth|manifest.yml|Redirects|stackato.yml) $tmp_dir || true
   rm -rf $build_dir/public
   mv $tmp_dir  $build_dir/public
 fi
@@ -69,44 +69,44 @@ if [[ -f Staticfile.auth ]]; then
 fi
 
 # Enable directory index
-if [[ -e "Staticfile" && "$(grep '^directory:' Staticfile)X" != "X" ]]; then
+if [[ -e "S3-Staticfile" && "$(grep '^directory:' S3-Staticfile)X" != "X" ]]; then
   status "Enabling directory index for folders without index.html files"
   touch nginx/conf/.enable_directory_index
 fi
 
 # Enable ssi module
-if [[ -e "Staticfile" && "$(grep '^ssi: enabled' Staticfile)X" != "X" ]]; then
+if [[ -e "S3-Staticfile" && "$(grep '^ssi: enabled' S3-Staticfile)X" != "X" ]]; then
   status "Enabling ssi"
   touch nginx/conf/.enable_ssi
 fi
 
 # Enable pushstate module
-if [[ -e "Staticfile" && "$(grep '^pushstate: enabled' Staticfile)X" != "X" ]]; then
+if [[ -e "S3-Staticfile" && "$(grep '^pushstate: enabled' S3-Staticfile)X" != "X" ]]; then
   status "Enabling pushstate"
   touch nginx/conf/.enable_pushstate
 fi
 
 # Enable S3
-if [[ -e "Staticfile" && "$(grep '^s3: enabled' Staticfile)X" != "X" ]]; then
+#if [[ -e "S3-Staticfile" && "$(grep '^s3: enabled' S3-Staticfile)X" != "X" ]]; then
   status "Enabling s3"
   touch nginx/conf/.enable_s3
-fi
+#fi
 
 # Enable cached directories
-if [[ -e "Staticfile" && "$(grep '^cached_dirs: .*$' Staticfile)X" != "X" ]]; then
+if [[ -e "S3-Staticfile" && "$(grep '^cached_dirs: .*$' S3-Staticfile)X" != "X" ]]; then
    status "Enabling cached directories"
-   awk -F: '/^cached_dirs:/{gsub (" ", "", $2);print $2}' Staticfile > nginx/conf/.enable_cached_dirs
+   awk -F: '/^cached_dirs:/{gsub (" ", "", $2);print $2}' S3-Staticfile > nginx/conf/.enable_cached_dirs
 fi
 
 # Enable migration proxy, if no migration proxy check for custom error page
-if [[ -e "Staticfile" && "$(grep '^migrationproxy: .*$' Staticfile)X" != "X" ]]; then
+if [[ -e "S3-Staticfile" && "$(grep '^migrationproxy: .*$' S3-Staticfile)X" != "X" ]]; then
    status "Enabling migration proxy"
-   awk '/^migrationproxy:/{gsub("migrationproxy: ","",$0);print $0}' Staticfile > nginx/conf/.enable_migration_proxy
+   awk '/^migrationproxy:/{gsub("migrationproxy: ","",$0);print $0}' S3-Staticfile > nginx/conf/.enable_migration_proxy
 else
     # Enable custom error page
-    if [[ -e "Staticfile" && "$(grep '^errorpage: .*$' Staticfile)X" != "X" ]]; then
+    if [[ -e "S3-Staticfile" && "$(grep '^errorpage: .*$' S3-Staticfile)X" != "X" ]]; then
        status "Enabling custom error page"
-       awk -F: '/^errorpage:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.enable_custom_errorpage
+       awk -F: '/^errorpage:/{gsub (" ","",$2);print $2}' S3-Staticfile > nginx/conf/.enable_custom_errorpage
     fi
 fi
 
@@ -117,9 +117,9 @@ if [[ -e "Redirects"  ]]; then
 fi
 
 # Restric network source
-if [[ -e "Staticfile" && "$(grep '^allowonly: .*$' Staticfile)X" != "X" ]]; then
+if [[ -e "S3-Staticfile" && "$(grep '^allowonly: .*$' S3-Staticfile)X" != "X" ]]; then
  status "Restricting source IP address range"
- awk -F: '/^allowonly:/{gsub (" ","",$2);print $2}' Staticfile > nginx/conf/.allowonly
+ awk -F: '/^allowonly:/{gsub (" ","",$2);print $2}' S3-Staticfile > nginx/conf/.allowonly
 fi
 
 cp $compile_buildpack_bin/boot.sh .

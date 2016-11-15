@@ -1,67 +1,29 @@
-#Cloud Foundry Static Buildpack
+#Cloud Foundry Static Buildpack with S3 support
 [![CF Slack](https://s3.amazonaws.com/buildpacks-assets/buildpacks-slack.svg)](http://slack.cloudfoundry.org)
 
-A Cloud Foundry [buildpack](http://docs.cloudfoundry.org/buildpacks/) for static stites (HTML/JS/CSS).
+A Cloud Foundry [buildpack](http://docs.cloudfoundry.org/buildpacks/) for static stites (HTML/JS/CSS) with the static assets stored in Amazon Simple Storage Service (S3).
+This buildpack was originally forked from the default staticfile buildpack, but since it was modified to support a cloud service provider specific service (S3) it provides capabilities that should not be merged back into a generic buildpack that can run on any CSP.
 
-### Buildpack User Documentation
+This buildpack is dependent upon a custom build of nginx that incorporates the ngx_aws_auth module from https://github.com/anomalizer/ngx_aws_auth, currently forked and patched at https://github.com/amaline/ngx_aws_auth
 
-Official buildpack documentation can be found at http://docs.cloudfoundry.org/buildpacks/staticfile/index.html.
+## Detection
+The buildpack will use a file called S3-Staticfile instead of the original Staticfile for detection and additional configuration metadata
 
-### Building the Buildpack
-
-1. Make sure you have fetched submodules
-
-  ```bash
-  git submodule update --init
-  ```
-
-1. Get latest buildpack dependencies
-
-  ```shell
-  BUNDLE_GEMFILE=cf.Gemfile bundle
-  ```
-
-1. Build the buildpack
-
-  ```shell
-  BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager [ --cached | --uncached ]
-  ```
-
-1. Use in Cloud Foundry
-
-  Upload the buildpack to your Cloud Foundry and optionally specify it by name
-
-  ```bash
-  cf create-buildpack custom_node_buildpack node_buildpack-offline-custom.zip 1
-  cf push my_app -b custom_node_buildpack
-  ```
-
-### Testing
-Buildpacks use the [Machete](https://github.com/cloudfoundry/machete) framework for running integration tests.
-
-To test a buildpack, run the following command from the buildpack's directory:
-
+## Compile
+The buildpack examines the contents of the S3-Staticfile and looks for the following entries
 ```
-BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-build
+ssi: enabled
+cached_dirs: {directoryName};{expireTime},{directoryName};{expireTime},...
+migrationproxy: {url}
+errorpage: {customErrorPage.html}
+allowonly: {IP Address/CIDR}
 ```
 
-More options can be found on Machete's [Github page.](https://github.com/cloudfoundry/machete)
-
-### Contributing
-
-Find our guidelines [here](./CONTRIBUTING.md).
-
-### Help and Support
-
-Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
-
-### Reporting Issues
-
-Open a GitHub issue on this project [here](https://github.com/cloudfoundry/staticfile/issues/new)
-
-### Active Development
-
-The project backlog is on [Pivotal Tracker](https://www.pivotaltracker.com/projects/1042066)
+* The 'ssi: enabled' will enable server side includes.  Since SSI calls enabled within the same server as the AWS signing were not being signed, a separate server listening only on localhost:8080 is established in order to perform the signing, while the SSI is defined in the initial server listening on the Cloud Foundry defined port.
+* 'cached_dirs:' defines a set of directories that will be cached onto the local ephemeral disk and have the expires header set for the cooresponding period of time.
+* 'migrationproxy:' defines a secondary proxy_pass to send requests if the original call to S3 returns a 404 error.  This enables a legacy web server to be used as a pass through during a migration process.
+* 'errorpage:' is mutually exclusive with 'migrationproxy:' and will be ignored if 'migrationproxy:' is set.  It defines a custom web page in case of a 404 error.
+* 'allowonly:' will enable trusting of the 'x-forwarded-for' header from the Cloud Foundry router and limit calls to a IP address in CIDR format.
 
 ### Acknowledgements
 
