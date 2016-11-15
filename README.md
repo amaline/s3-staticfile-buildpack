@@ -1,20 +1,67 @@
-#Cloud Foundry Static Buildpack with S3 support
+#Cloud Foundry Static Buildpack
 [![CF Slack](https://s3.amazonaws.com/buildpacks-assets/buildpacks-slack.svg)](http://slack.cloudfoundry.org)
 
-A Cloud Foundry [buildpack](http://docs.cloudfoundry.org/buildpacks/) for static stites (HTML/JS/CSS) with the static assets stored in Amazon Simple Storage Service (S3).
-This buildpack was originally forked from the default staticfile buildpack, but since it was modified to support a cloud service provider specific service (S3) it provides capabilities that should not be merged back into a generic buildpack that can run on any CSP.
+A Cloud Foundry [buildpack](http://docs.cloudfoundry.org/buildpacks/) for static stites (HTML/JS/CSS).
 
-## Detection
-The buildpack will use a file called S3-Staticfile instead of the original Staticfile for detection and additional configuration metadata
+### Buildpack User Documentation
 
-## Compile
-The buildpack examines the contents of the S3-Staticfile and looks for the following entries
+Official buildpack documentation can be found at http://docs.cloudfoundry.org/buildpacks/staticfile/index.html.
+
+### Building the Buildpack
+
+1. Make sure you have fetched submodules
+
+  ```bash
+  git submodule update --init
+  ```
+
+1. Get latest buildpack dependencies
+
+  ```shell
+  BUNDLE_GEMFILE=cf.Gemfile bundle
+  ```
+
+1. Build the buildpack
+
+  ```shell
+  BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager [ --cached | --uncached ]
+  ```
+
+1. Use in Cloud Foundry
+
+  Upload the buildpack to your Cloud Foundry and optionally specify it by name
+
+  ```bash
+  cf create-buildpack custom_node_buildpack node_buildpack-offline-custom.zip 1
+  cf push my_app -b custom_node_buildpack
+  ```
+
+### Testing
+Buildpacks use the [Machete](https://github.com/cloudfoundry/machete) framework for running integration tests.
+
+To test a buildpack, run the following command from the buildpack's directory:
+
 ```
-ssi: enabled
-cached_dirs: {directoryName};{expireTime},{directoryName};{expireTime},...
-migrationproxy: {url}
-allowonly: {IP Address/CIDR}
+BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-build
 ```
+
+More options can be found on Machete's [Github page.](https://github.com/cloudfoundry/machete)
+
+### Contributing
+
+Find our guidelines [here](./CONTRIBUTING.md).
+
+### Help and Support
+
+Join the #buildpacks channel in our [Slack community] (http://slack.cloudfoundry.org/) if you need any further assistance.
+
+### Reporting Issues
+
+Open a GitHub issue on this project [here](https://github.com/cloudfoundry/staticfile/issues/new)
+
+### Active Development
+
+The project backlog is on [Pivotal Tracker](https://www.pivotaltracker.com/projects/1042066)
 
 ### Acknowledgements
 
