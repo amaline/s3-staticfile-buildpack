@@ -66,7 +66,8 @@ cp -f $compile_buildpack_dir/conf/mime.types nginx/conf/mime.types
 [[ -f $build_dir/public/mime.types ]] && mv $build_dir/public/mime.types nginx/conf/mime.types
 
 status "Setting up s3fs"
-tar xzf $compile_s3fs_tgz
+tar xzvf $compile_s3fs_tgz
+pwd;ls
 cp -f $compile_buildpack_dir/s3fs /usr/local/bin/s3fs
 ls -l /usr/local/bin/s3fs
 
