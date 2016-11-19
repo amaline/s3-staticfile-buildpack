@@ -67,8 +67,8 @@ cp -f $compile_buildpack_dir/conf/mime.types nginx/conf/mime.types
 
 status "Setting up s3fs"
 tar xzf $compile_s3fs_tgz
-sudo cp -f s3fs /usr/local/bin/s3fs
-ls -l /usr/local/bin/s3fs
+pwd
+echo "APP_ROOT=${APP_ROOT}"
 
 if [[ -f Staticfile.auth ]]; then
   status "Enabling basic authentication"
