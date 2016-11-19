@@ -52,7 +52,8 @@ then
    mkdir $APP_ROOT/webdav
    echo "ID=$(id)"
    ls -l /etc/fuse.conf
-   $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred  -o allow_other 
+   $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred  
+   ls $APP_ROOT/webdav/*
    echo "--s3fs setup complete--"
 fi
 
@@ -117,7 +118,7 @@ echo "Rebuild nginx.conf every $r seconds"
         echo "nginx.conf rebuilt.  Issuing: kill -HUP $NGINX_PID" 
         kill -HUP $NGINX_PID
     done) &
-    
+(sleep 10;ps -elf)    &
 exec $APP_ROOT/nginx/sbin/nginx -p $APP_ROOT/nginx -c $APP_ROOT/nginx/conf/nginx.conf
 
 # ------------------------------------------------------------------------------------------------
