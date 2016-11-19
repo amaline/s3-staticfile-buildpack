@@ -51,6 +51,7 @@ then
    chmod 600 $APP_ROOT/s3cred
    mkdir $APP_ROOT/webdav
    echo "ID=$(id)"
+   ls -l /etc/fuse.conf
    $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred  -o allow_other 
    echo "--s3fs setup complete--"
 fi
