@@ -50,8 +50,9 @@ then
    echo "${AWS_ACCESS_KEY}:${AWS_SECRET}" > $APP_ROOT/s3cred
    chmod 600 $APP_ROOT/s3cred
    mkdir $APP_ROOT/webdav
-   $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred -d -d -f -o f2 -o curldbg
-   echo '--s3fs setup complete--'
+   echo "ID=$(id)"
+   $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred  -o allow_other 
+   echo "--s3fs setup complete--"
 fi
 
 if [ -f $APP_ROOT/nginx/conf/.enable_cached_dirs ]
