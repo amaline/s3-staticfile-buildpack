@@ -46,6 +46,10 @@ then
    export AWS_SIGNING_KEY=`$APP_ROOT/generate_signing_key -k $AWS_SECRET -r $AWS_REGION -s s3 -d $CURRENT_DATE|head -1`
    #echo "AWS_SIGNING_KEY=${AWS_SIGNING_KEY}"
    export AWS_SIGNING_PORT=8000
+   
+   echo "${AWS_ACCESS_KEY}:${AWS_SECRET}" > $APP_ROOT/s3cred
+   chmod 600 $APP_ROOT/s3cred
+   $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred
 fi
 
 if [ -f $APP_ROOT/nginx/conf/.enable_cached_dirs ]
