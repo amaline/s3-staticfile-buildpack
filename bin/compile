@@ -21,6 +21,11 @@ BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-exte
 translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency nginx.tgz /tmp)
 echo "Downloaded [$translated_url]"
 compile_nginx_tgz="/tmp/nginx.tgz"
+
+translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency s3fs.tgz /tmp)
+echo "Downloaded [$translated_url]"
+compile_s3fs_tgz="/tmp/s3fs.tgz"
+
 cd $build_dir
 
 # Alternate root location (default is root of project) for html/js/css
@@ -59,6 +64,11 @@ cp -f $compile_buildpack_dir/conf/mime.types nginx/conf/mime.types
 
 [[ -f $build_dir/public/nginx.conf ]] && mv $build_dir/public/nginx.conf nginx/conf/nginx.conf
 [[ -f $build_dir/public/mime.types ]] && mv $build_dir/public/mime.types nginx/conf/mime.types
+
+status "Setting up s3fs"
+tar xzf $compile_s3fs_tgz
+cp -f $compile_buildpack_dir/s3fs /usr/local/bin/s3fs
+ls -l /usr/local/bin/s3fs
 
 if [[ -f Staticfile.auth ]]; then
   status "Enabling basic authentication"
@@ -124,5 +134,8 @@ fi
 
 cp $compile_buildpack_bin/boot.sh .
 cp $compile_buildpack_bin/generate_signing_key .
+cp $compile_buildpack_bin/s3_cache_primer.py .
 chmod +x generate_signing_key
+
+status "Python Version: $(python -V)"
 

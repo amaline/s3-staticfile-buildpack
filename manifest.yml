@@ -14,10 +14,19 @@ url_to_dependency_map:
 - match: nginx.tgz
   name: nginx
   version: 1.11.4
+- match: s3fs.tgz
+  name: s3fs
+  version: 1.80
 dependencies:
 - name: nginx
   version: 1.11.4
   uri: https://github.com/amaline/s3-proxy-nginx/releases/download/v0.8.5/nginx-s3.tgz
   md5: 038f852b7228fe751d67341f9999603b
+  cf_stacks:
+  - cflinuxfs2
+- name: s3fs
+  version: 1.80
+  uri: https://github.com/amaline/cflinuxfs2-s3fs-build/releases/download/v1.80/s3fs.tgz
+  md5: 8ddcd6d86f706e168a78814065826475
   cf_stacks:
   - cflinuxfs2
