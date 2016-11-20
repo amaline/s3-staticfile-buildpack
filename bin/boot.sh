@@ -54,9 +54,9 @@ then
        mkdir $APP_ROOT/webdav
        chmod 777 $APP_ROOT/webdav
        $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred  
+       chown -R vcap.vcap $APP_ROOT/webdav
+       echo "<HTML><BODY><H2>$(date)</H2>Test WebDav</BODY></HTML>" > $APP_ROOT/webdav/wdtest.html
        ls -l $APP_ROOT/webdav
-       echo "<HTML><BODY>Test WebDav</BODY></HTML>" > $APP_ROOT/webdav/wdtest.html
-       ls -l $APP_ROOT/webdav/wdtest.html
        export WEBDAVPATH=$(cat $APP_ROOT/nginx/conf/.enable_webdav)
    fi
 fi
