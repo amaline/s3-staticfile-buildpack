@@ -133,8 +133,8 @@ if [[ -e "S3-Staticfile" && "$(grep '^allowonly: .*$' S3-Staticfile)X" != "X" ]]
 fi
 
 # Enable webdav
-if [[ -e "S3-Staticfile" && "$(grep '^webdav: .*$" S3-Staticfile)X" != "X"]]; then
- WEBDAVPATH=$(awk -F: '/^webdav:/{gsub(" ","",$2);print $2}' S3-Staticfile)
+if [[ -e "S3-Staticfile" && "$(grep '^webdav: .*$' S3-Staticfile)X" != "X"]]; then
+ WEBDAVPATH=$(awk -F: '/^webdav:/{gsub (" ","",$2);print $2}' S3-Staticfile)
  status "Enabling webdav on location: ${WEBDAVPATH}"
  echo $WEBDAVPATH > nginx/conf/.enable_webdav
 fi
