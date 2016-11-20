@@ -67,8 +67,6 @@ cp -f $compile_buildpack_dir/conf/mime.types nginx/conf/mime.types
 
 status "Setting up s3fs"
 tar xzf $compile_s3fs_tgz
-pwd
-echo "APP_ROOT=${APP_ROOT}"
 
 if [[ -f Staticfile.auth ]]; then
   status "Enabling basic authentication"
@@ -133,7 +131,7 @@ if [[ -e "S3-Staticfile" && "$(grep '^allowonly: .*$' S3-Staticfile)X" != "X" ]]
 fi
 
 # Enable webdav
-if [[ -e "S3-Staticfile" && "$(grep '^webdav: .*$' S3-Staticfile)X" != "X"]]; then
+if [[ -e "S3-Staticfile" && "$(grep '^webdav: .*$' S3-Staticfile)X" != "X" ]]; then
  WEBDAVPATH=$(awk -F: '/^webdav:/{gsub (" ","",$2);print $2}' S3-Staticfile)
  status "Enabling webdav on location: ${WEBDAVPATH}"
  echo $WEBDAVPATH > nginx/conf/.enable_webdav
