@@ -132,6 +132,13 @@ if [[ -e "S3-Staticfile" && "$(grep '^allowonly: .*$' S3-Staticfile)X" != "X" ]]
  awk -F: '/^allowonly:/{gsub (" ","",$2);print $2}' S3-Staticfile > nginx/conf/.allowonly
 fi
 
+# Enable webdav
+if [[ -e "S3-Staticfile" && "$(grep '^webdav: .*$" S3-Staticfile)X" != "X"]]; then
+ WEBDAVPATH=$(awk -F: '/^webdav:/{gsub(" ","",$2);print $2}' S3-Staticfile)
+ status "Enabling webdav on location: ${WEBDAVPATH}"
+ echo $WEBDAVPATH > nginx/conf/.enable_webdav
+fi
+
 cp $compile_buildpack_bin/boot.sh .
 cp $compile_buildpack_bin/generate_signing_key .
 cp $compile_buildpack_bin/s3_cache_primer.py .

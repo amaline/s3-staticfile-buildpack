@@ -47,14 +47,14 @@ then
    #echo "AWS_SIGNING_KEY=${AWS_SIGNING_KEY}"
    export AWS_SIGNING_PORT=8000
    
-   echo "${AWS_ACCESS_KEY}:${AWS_SECRET}" > $APP_ROOT/s3cred
-   chmod 600 $APP_ROOT/s3cred
-   mkdir $APP_ROOT/webdav
-   echo "ID=$(id)"
-   ls -l /etc/fuse.conf
-   $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred  
-   ls $APP_ROOT/webdav/*
-   echo "--s3fs setup complete--"
+   if [ -f $APP_ROOT/nginx/conf/.enable_webdav ]
+   then
+       echo "${AWS_ACCESS_KEY}:${AWS_SECRET}" > $APP_ROOT/s3cred
+       chmod 600 $APP_ROOT/s3cred
+       mkdir $APP_ROOT/webdav
+       $APP_ROOT/s3fs ${AWS_S3_BUCKET} $APP_ROOT/webdav -o passwd_file=${APP_ROOT}/s3cred  
+       export WEBDAVPATH=$(cat $APP_ROOT/nginx/conf/.enable_webdav)
+   fi
 fi
 
 if [ -f $APP_ROOT/nginx/conf/.enable_cached_dirs ]
