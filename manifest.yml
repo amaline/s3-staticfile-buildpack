@@ -20,8 +20,8 @@ url_to_dependency_map:
 dependencies:
 - name: nginx
   version: 1.11.4
-  uri: https://github.com/amaline/s3-proxy-nginx/releases/download/v0.8.5/nginx-s3.tgz
-  md5: 038f852b7228fe751d67341f9999603b
+  uri: https://github.com/amaline/s3-proxy-nginx/releases/download/v0.8.6/nginx-s3.tgz
+  md5: cbf28a53d8c52fa51ee2c9361c34bd59
   cf_stacks:
   - cflinuxfs2
 - name: s3fs
