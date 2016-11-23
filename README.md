@@ -15,7 +15,7 @@ ssi: enabled
 cached_dirs: {directoryName};{expireTime},{directoryName};{expireTime},...
 migrationproxy: {url}
 errorpage: {customErrorPage.html}
-allowonly: {IP Address/CIDR}
+allowonly: {Comma separated IP Address (individual or CIDR format)}
 ```
 
 * The 'ssi: enabled' will enable server side includes.  Since SSI calls enabled within the same server as the AWS signing were not being signed, a separate server listening only on localhost:8080 is established in order to perform the signing, while the SSI is defined in the initial server listening on the Cloud Foundry defined port.

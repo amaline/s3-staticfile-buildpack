@@ -140,7 +140,8 @@ fi
 cp $compile_buildpack_bin/boot.sh .
 cp $compile_buildpack_bin/generate_signing_key .
 cp $compile_buildpack_bin/s3_cache_primer.py .
-chmod +x generate_signing_key
+cp $compile_buildpack_bin/upload.sh .
+chmod +x generate_signing_key upload.sh
 
 status "Python Version: $(python -V)"
 
