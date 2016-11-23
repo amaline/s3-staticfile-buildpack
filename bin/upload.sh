@@ -23,7 +23,7 @@ mkdir tmpupload
 
 ./s3fs $AWS_S3_BUCKET ./tmpupload -o passwd_file=s3cred
 
-unzip $1 -f -o -d tmpupload
+unzip -fo $1 -d tmpupload
 ls -lR tmpupload
 rm s3cred
 sudo umount ./tmpupload
