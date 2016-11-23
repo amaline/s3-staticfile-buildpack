@@ -21,7 +21,7 @@ echo "${AWS_ACCESS_KEY}:${AWS_SECRET}" > s3cred
 
 mkdir tmpupload
 
-./s3fs $AWS_S3_BUCKET ./webdav -o passwd_file=s3cred
+./s3fs $AWS_S3_BUCKET ./tmpupload -o passwd_file=s3cred
 
 unzip $1 -d tmpupload
 ls -lR tmpupload
