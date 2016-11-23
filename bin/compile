@@ -26,6 +26,10 @@ translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependen
 echo "Downloaded [$translated_url]"
 compile_s3fs_tgz="/tmp/s3fs.tgz"
 
+translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency goofys.tgz /tmp)
+echo "Downloaded [$translated_url]"
+compile_goofys_tgz="/tmp/goofys.tgz"
+
 cd $build_dir
 
 # Alternate root location (default is root of project) for html/js/css
@@ -67,6 +71,9 @@ cp -f $compile_buildpack_dir/conf/mime.types nginx/conf/mime.types
 
 status "Setting up s3fs"
 tar xzf $compile_s3fs_tgz
+
+status "Setting up goofys"
+tar xzf $compile_goofys_tgz
 
 if [[ -f Staticfile.auth ]]; then
   status "Enabling basic authentication"
@@ -143,5 +150,5 @@ cp $compile_buildpack_bin/s3_cache_primer.py .
 cp $compile_buildpack_bin/upload.sh .
 chmod +x generate_signing_key upload.sh
 
-status "Python Version: $(python -V)"
+status "Python Version: $(python -V 2>&1)"
 

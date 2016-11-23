@@ -17,6 +17,9 @@ url_to_dependency_map:
 - match: s3fs.tgz
   name: s3fs
   version: 1.80
+- match: goofys.tgz
+  name: goofys
+  version: 0.0.9
 dependencies:
 - name: nginx
   version: 1.11.4
@@ -28,5 +31,11 @@ dependencies:
   version: 1.80
   uri: https://github.com/amaline/cflinuxfs2-s3fs-build/releases/download/v1.80/s3fs.tgz
   md5: 8ddcd6d86f706e168a78814065826475
+  cf_stacks:
+  - cflinuxfs2
+- name: goofys
+  version: 0.0.9
+  uri: https://github.com/amaline/cflinuxfs2-goofys-build/releases/download/v0.0.9/goofys.tgz
+  md5: 1d3a766f58e1125957f2371b1349f2ba
   cf_stacks:
   - cflinuxfs2

@@ -17,11 +17,22 @@ AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq --raw-output .s3[].credentials.access_key
 AWS_S3_BUCKET=`echo $VCAP_SERVICES|jq --raw-output  .s3[].credentials.bucket`
 AWS_SECRET=`echo $VCAP_SERVICES| jq --raw-output  .s3[].credentials.secret_access_key`
 
-echo "${AWS_ACCESS_KEY}:${AWS_SECRET}" > s3cred
+cat > ~/.aws/credentials <<END
+[default]
+aws_access_key_id = ${AWS_ACCESS_KEY}
+aws_secret_access_key = ${AWS_SECRET}
+END
+
+chmod 600 ~/.aws/credentials
+
+#echo "${AWS_ACCESS_KEY}:${AWS_SECRET}" > s3cred
 
 mkdir tmpupload
 
-./s3fs $AWS_S3_BUCKET ./tmpupload -o passwd_file=s3cred
+#./s3fs $AWS_S3_BUCKET ./tmpupload -o passwd_file=s3cred
+UID=$(id -u)
+GID=$(id -g)
+./goofys --uid ${UID} --gid ${GID} $AWS_S3_BUCKET ./tmpupload
 
 unzip -fo $1 -d tmpupload
 ls -lR tmpupload
