@@ -16,7 +16,9 @@ fi
 AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq --raw-output .s3[].credentials.access_key_id`
 AWS_S3_BUCKET=`echo $VCAP_SERVICES|jq --raw-output  .s3[].credentials.bucket`
 AWS_SECRET=`echo $VCAP_SERVICES| jq --raw-output  .s3[].credentials.secret_access_key`
+AWS_REGION=`echo $VCAP_SERVICES|jq --raw-output  .s3[].credentials.region`
 
+mkdir ~/.aws
 cat > ~/.aws/credentials <<END
 [default]
 aws_access_key_id = ${AWS_ACCESS_KEY}
