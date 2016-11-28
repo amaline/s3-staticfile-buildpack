@@ -51,13 +51,16 @@ MYGID=$(id -g)
 ./goofys -f --uid ${MYUID} --gid ${MYGID} $AWS_S3_BUCKET $TMPUPLOAD 2>&1 > $LOGDIR/out.log &
 GOOFYS_PID=$!
 
+ls -l $1
+echo "Unzip $1"
 unzip -fo $1 -d $TMPUPLOAD
 ls -lR $TMPUPLOAD > $LOGDIR/uploadinfo.log
+echo "Unzip Log Output:"
 cat $LOGDIR/uploadinfo.log
 #rm s3cred
 
 #clean up
-sudo umount $TMPUPLOAD
+#sudo umount $TMPUPLOAD
 rm ~/.aws/credentials
 kill $GOOFYS_PID
 kill $LOGCAT_PID
