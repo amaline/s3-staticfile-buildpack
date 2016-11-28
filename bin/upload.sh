@@ -53,7 +53,7 @@ GOOFYS_PID=$!
 
 ls -l $1
 echo "Unzip $1"
-unzip -fo $1 -d $TMPUPLOAD
+unzip -o $1 -d $TMPUPLOAD
 ls -lR $TMPUPLOAD > $LOGDIR/uploadinfo.log
 echo "Unzip Log Output:"
 cat $LOGDIR/uploadinfo.log
