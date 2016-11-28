@@ -50,6 +50,10 @@ MYUID=$(id -u)
 MYGID=$(id -g)
 ./goofys -f --uid ${MYUID} --gid ${MYGID} --region $AWS_REGION $AWS_S3_BUCKET $TMPUPLOAD 2>&1 > $LOGDIR/out.log &
 GOOFYS_PID=$!
+echo "Sleeping for 10 seconds to ensure that the s3 bucket is mounted"
+sleep 10
+echo "Goofys log output:"
+cat $LOGDIR/out.log 
 
 ls -l $1
 echo "Unzip $1"
