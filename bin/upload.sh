@@ -48,7 +48,7 @@ LOGCAT_PID=$!
 #./s3fs $AWS_S3_BUCKET ./tmpupload -o passwd_file=s3cred
 MYUID=$(id -u)
 MYGID=$(id -g)
-./goofys -f --uid ${MYUID} --gid ${MYGID} $AWS_S3_BUCKET $TMPUPLOAD 2>&1 > $LOGDIR/out.log &
+./goofys -f --uid ${MYUID} --gid ${MYGID} --region $AWS_REGION $AWS_S3_BUCKET $TMPUPLOAD 2>&1 > $LOGDIR/out.log &
 GOOFYS_PID=$!
 
 ls -l $1
