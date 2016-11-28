@@ -12,6 +12,11 @@ if [ "$#" -ne 1 ]; then
     echo "Usage: ./upload zipfile"
     exit 100
 fi
+
+
+if [ "${APP_ROOT}X" = "X" ];then
+  APP_ROOT=$(echo ~)
+fi
 echo "APP_ROOT=${APP_ROOT}"
 
 AWS_ACCESS_KEY=`echo $VCAP_SERVICES|jq --raw-output .s3[].credentials.access_key_id`
