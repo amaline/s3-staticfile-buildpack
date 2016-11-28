@@ -34,17 +34,18 @@ then
    if [ "${AWS_REGION}X" = "X" ]
    then
       AWS_REGION="us-east-1"
+      S3_ENDPOINT="s3.amazonaws.com"
    fi
    
-   if [ "${S3_ENDPOINT}X" = "X" ]
+   if [ "${AWS_REGION}" = "us-gov-west-1" ]
    then
-      S3_ENDPOINT="s3.amazonaws.com"
+      S3_ENDPOINT="s3-us-gov-west-1.amazonaws.com"
    fi
    
    export AWS_SIGNING_KEY_SCOPE=${CURRENT_DATE}/${AWS_REGION}/s3/aws4_request
    
-   echo "CURRENT_DATE=${CURRENT_DATE}."
-   echo "AWS_REGION=${AWS_REGION}."
+   echo "CURRENT_DATE=${CURRENT_DATE}"
+   echo "AWS_REGION=${AWS_REGION}"
    echo "AWS_ACCESS_KEY=${AWS_ACCESS_KEY}"
    echo "AWS_S3_BUCKET=${AWS_S3_BUCKET}"
    echo "S3_ENDPOINT=${S3_ENDPOINT}"
