@@ -35,10 +35,10 @@ chmod 600 ~/.aws/credentials
 
 #echo "${AWS_ACCESS_KEY}:${AWS_SECRET}" > s3cred
 
-mkdir $APP_ROOT/goofys
-LOGDIR=$APP_ROOT/goofys/logs
+mkdir $APP_ROOT/goofys_working
+LOGDIR=$APP_ROOT/goofys_working/logs
 mkdir $LOGDIR
-TMPUPLOAD=$APP_ROOT/goofys/tmpupload
+TMPUPLOAD=$APP_ROOT/goofys_working/tmpupload
 mkdir $TMPUPLOAD
 
 mkfifo $LOGDIR/out.log
