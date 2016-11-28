@@ -41,8 +41,8 @@ mkdir $LOGDIR
 TMPUPLOAD=$APP_ROOT/goofys_working/tmpupload
 mkdir $TMPUPLOAD
 
-mkfifo $LOGDIR/out.log
-cat < $LOGDIR/out.log &
+touch $LOGDIR/out.log
+
 LOGCAT_PID=$!
 
 #./s3fs $AWS_S3_BUCKET ./tmpupload -o passwd_file=s3cred
@@ -57,10 +57,13 @@ unzip -o $1 -d $TMPUPLOAD
 ls -lR $TMPUPLOAD > $LOGDIR/uploadinfo.log
 echo "Unzip Log Output:"
 cat $LOGDIR/uploadinfo.log
+echo "Goofys log output:"
+cat $LOGDIR/out.log 
+
 #rm s3cred
 
 #clean up
 #sudo umount $TMPUPLOAD
-rm ~/.aws/credentials
-kill $GOOFYS_PID
-kill $LOGCAT_PID
+#rm ~/.aws/credentials
+#kill $GOOFYS_PID
+#kill $LOGCAT_PID
